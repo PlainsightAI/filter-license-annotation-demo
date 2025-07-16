@@ -3,6 +3,10 @@ License Plate Annotation Filter release notes
 
 ## [Unreleased]
 
+## v0.1.2 - 2025-07-16
+
+# Changed
+- Updated dependencies
 
 ## v0.1.1 - 2025-05-22
 
