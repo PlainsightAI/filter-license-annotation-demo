@@ -25,9 +25,9 @@ dynamic = ["version"]
 
 dependencies = [
   "openfilter[all]>=0.1.0,<0.2.0",
-  "filter-license-plate-detection==0.1.7",
-  "filter-crop==0.1.5",
-  "filter-optical-character-recognition==0.1.4"
+  "filter-license-plate-detection>=0.1.0,<0.2.0",
+  "filter-crop>=0.1.0,<0.2.0",
+  "filter-optical-character-recognition>=0.1.0,<0.2.0"
 ]
 
 [tool.distutils.bdist_wheel]
