@@ -3,6 +3,12 @@ License Plate Annotation Filter release notes
 
 ## [Unreleased]
 
+## v0.1.5 - 2025-08-07
+
+# Changed
+- Updated dependencies
+- Added Python 3.13 support
+
 ## v0.1.4 - 2025-08-07
 
 # Changed
