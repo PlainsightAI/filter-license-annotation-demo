@@ -1,6 +1,6 @@
 # 📦 Pull Request
 
-Thank you for contributing to the Crop Filter!
+Thank you for contributing to the LAD Filter!
 
 Please fill out this form to help us understand your change.
 
