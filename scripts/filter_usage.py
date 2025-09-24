@@ -2,7 +2,7 @@
 """
 License Annotation Demo usage script
 
-End-to-end pipeline (single process) that matches Navar's expectations:
+End-to-end pipeline:
 VideoIn → LicensePlateDetection → Crop (topic license_plate) → OCR → LicenseAnnotationDemo → Webvis
 
 Environment variables:
