@@ -16,6 +16,7 @@ class FilterLicenseAnnotationDemoConfig(FilterConfig):
     inset_size: tuple = (200, 60)  # (width, height) of inset image
     inset_margin: tuple = (10, 10)  # (x, y) margin from top-left corner
     debug: bool = False  # Enable debug logging
+    forward_upstream_data: bool = True  # Forward non-image frames from upstream
 
 class FilterLicenseAnnotationDemo(Filter):
     """Annotates frames with OCR texts and imposes cropped license plate images."""
@@ -62,6 +63,22 @@ class FilterLicenseAnnotationDemo(Filter):
             except Exception as e:
                 raise ValueError(f"Invalid inset_margin format '{config.inset_margin}'. Expected 'XMARGINxYMARGIN'. Error: {e}")
 
+        # Coerce string values provided directly in config dict
+        if isinstance(getattr(config, 'font_scale', None), str):
+            try:
+                config.font_scale = float(config.font_scale)
+            except Exception:
+                pass
+        if isinstance(getattr(config, 'font_thickness', None), str):
+            try:
+                config.font_thickness = int(config.font_thickness)
+            except Exception:
+                pass
+        if isinstance(getattr(config, 'debug', None), str):
+            config.debug = config.debug.strip().lower() == 'true'
+        if isinstance(getattr(config, 'forward_upstream_data', None), str):
+            config.forward_upstream_data = config.forward_upstream_data.strip().lower() == 'true'
+
         return config
 
     def setup(self, config: FilterLicenseAnnotationDemoConfig):
@@ -71,6 +88,7 @@ class FilterLicenseAnnotationDemo(Filter):
         self.inset_size = config.inset_size
         self.inset_margin = config.inset_margin
         self.debug = config.debug
+        self.forward_upstream_data = config.forward_upstream_data
         self.last_seen_license = None  # Track last detected license plate
 
         if self.debug:
@@ -82,109 +100,122 @@ class FilterLicenseAnnotationDemo(Filter):
         logger.info("FilterLicenseAnnotationDemo shutdown complete.")
 
     def process(self, frames: dict[str, Frame]):
-        main_frame = frames.get("main")
-        cropped_frame = frames.get(self.cropped_topic_suffix)
+        output_frames: dict[str, Frame] = {}
 
-        if main_frame is None:
-            logger.warning("Main frame missing — skipping processing.")
-            return frames
+        for topic, frame in frames.items():
+            # Forward non-image frames as-is if enabled
+            if frame is None or not getattr(frame, 'has_image', False):
+                if self.forward_upstream_data:
+                    output_frames[topic] = frame
+                continue
 
-        image = main_frame.rw_bgr.image
-        meta = main_frame.data.get("meta", {})
+            base_image = frame.rw_bgr.image.copy()
 
-        # 1. Overlay OCR texts
-        texts = []
-        if cropped_frame:
-            texts = cropped_frame.data.get("meta", {}).get("ocr_texts", [])
+            # Try to find a cropped frame to pair with base frame
+            cropped_frame = frames.get(self.cropped_topic_suffix)
 
-        # License plate extraction with fallback
-        license_plate_pattern = re.compile(r'^[A-Z]{3}[0-9]{4}$', re.IGNORECASE)
-
-        filtered_texts = []
-        for text in texts:
-            text = text.strip().replace(' ', '').upper()
-            if license_plate_pattern.match(text):
-                filtered_texts.append(text)
-
-        if filtered_texts:
-            self.last_seen_license = filtered_texts[0]  # Use first match
-            texts = [self.last_seen_license]
-        elif self.last_seen_license:
-            texts = [self.last_seen_license]  # fallback to last seen
-        else:
+            # 1. Overlay OCR texts
             texts = []
+            if cropped_frame:
+                texts = cropped_frame.data.get("meta", {}).get("ocr_texts", [])
 
-        logger.debug(f"Texts: {texts}")
-        if texts and cropped_frame:
-            text = texts[0].strip()
-            if text:
-                x_margin, y_margin = self.inset_margin
-                inset_width, inset_height = self.inset_size
-                padding = 6
+            # License plate extraction with fallback
+            license_plate_pattern = re.compile(r'^[A-Z]{3}[0-9]{4}$', re.IGNORECASE)
 
-                # Estimate a font scale (text width = ~90% of inset width)
-                desired_text_width = inset_width * 0.9
-                test_font_scale = 1.0
-                (test_width, _), _ = cv2.getTextSize(
-                    text,
-                    fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                    fontScale=test_font_scale,
-                    thickness=self.font_thickness
-                )
-                font_scale = test_font_scale * (desired_text_width / test_width)
+            filtered_texts = []
+            for text in texts:
+                text = text.strip().replace(' ', '').upper()
+                if license_plate_pattern.match(text):
+                    filtered_texts.append(text)
 
-                # Get text size with adjusted scale
-                (text_width, text_height), baseline = cv2.getTextSize(
-                    text,
-                    fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                    fontScale=font_scale,
-                    thickness=self.font_thickness
-                )
+            if filtered_texts:
+                self.last_seen_license = filtered_texts[0]  # Use first match
+                texts = [self.last_seen_license]
+            elif self.last_seen_license:
+                texts = [self.last_seen_license]  # fallback to last seen
+            else:
+                texts = []
 
-                x1 = x_margin
-                y1 = y_margin + inset_height + padding
-                x2 = x1 + text_width + 2 * padding
-                y2 = y1 + text_height + 2 * padding
+            logger.debug(f"[{topic}] Texts: {texts}")
+            if texts and cropped_frame:
+                text = texts[0].strip()
+                if text:
+                    x_margin, y_margin = self.inset_margin
+                    inset_width, inset_height = self.inset_size
+                    padding = 6
 
-                if y2 <= image.shape[0] and x2 <= image.shape[1]:
-                    cv2.rectangle(image, (x1, y1), (x2, y2), (50, 50, 50), thickness=-1)
-                    cv2.putText(
-                        image,
+                    # Estimate a font scale (text width = ~90% of inset width)
+                    desired_text_width = inset_width * 0.9
+                    test_font_scale = 1.0
+                    (test_width, _), _ = cv2.getTextSize(
                         text,
-                        (x1 + padding, y1 + text_height + padding // 2),
+                        fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                        fontScale=test_font_scale,
+                        thickness=self.font_thickness
+                    )
+                    # Avoid divide-by-zero for empty width
+                    if test_width == 0:
+                        font_scale = self.font_scale
+                    else:
+                        font_scale = test_font_scale * (desired_text_width / test_width)
+
+                    # Get text size with adjusted scale
+                    (text_width, text_height), baseline = cv2.getTextSize(
+                        text,
                         fontFace=cv2.FONT_HERSHEY_SIMPLEX,
                         fontScale=font_scale,
-                        color=(255, 255, 255),
-                        thickness=self.font_thickness,
-                        lineType=cv2.LINE_AA
+                        thickness=self.font_thickness
                     )
-                else:
-                    logger.warning("OCR label doesn't fit below the inset image — skipping text drawing.")
 
-        # 2. Overlay cropped image
-        if cropped_frame:
-            cropped = cropped_frame.rw_bgr.image
-            try:
-                resized = cv2.resize(cropped, self.inset_size)
-                x_margin, y_margin = self.inset_margin
-                h, w = resized.shape[:2]
+                    x1 = x_margin
+                    y1 = y_margin + inset_height + padding
+                    x2 = x1 + text_width + 2 * padding
+                    y2 = y1 + text_height + 2 * padding
 
-                # Check if the cropped inset fits inside the main image
-                if (y_margin + h <= image.shape[0]) and (x_margin + w <= image.shape[1]):
-                    image[y_margin:y_margin+h, x_margin:x_margin+w] = resized
-                else:
-                    logger.warning("Inset image does not fit inside the main frame — skipping inset.")
+                    if y2 <= base_image.shape[0] and x2 <= base_image.shape[1]:
+                        cv2.rectangle(base_image, (x1, y1), (x2, y2), (50, 50, 50), thickness=-1)
+                        cv2.putText(
+                            base_image,
+                            text,
+                            (x1 + padding, y1 + text_height + padding // 2),
+                            fontFace=cv2.FONT_HERSHEY_SIMPLEX,
+                            fontScale=font_scale,
+                            color=(255, 255, 255),
+                            thickness=self.font_thickness,
+                            lineType=cv2.LINE_AA
+                        )
+                    else:
+                        logger.warning("OCR label doesn't fit below the inset image — skipping text drawing.")
 
-            except Exception as e:
-                logger.warning(f"Failed to overlay cropped image: {e}")
+            # 2. Overlay cropped image
+            if cropped_frame is not None and getattr(cropped_frame, 'has_image', False):
+                cropped = cropped_frame.rw_bgr.image
+                try:
+                    resized = cv2.resize(cropped, self.inset_size)
+                    x_margin, y_margin = self.inset_margin
+                    h, w = resized.shape[:2]
 
-        frames["main"] = Frame(
-            image,
-            {**main_frame.data},
-            format="BGR"
-        )
+                    # Check if the cropped inset fits inside the main image
+                    if (y_margin + h <= base_image.shape[0]) and (x_margin + w <= base_image.shape[1]):
+                        base_image[y_margin:y_margin+h, x_margin:x_margin+w] = resized
+                    else:
+                        logger.warning("Inset image does not fit inside the main frame — skipping inset.")
 
-        return frames
+                except Exception as e:
+                    logger.warning(f"Failed to overlay cropped image: {e}")
+
+            output_frames[topic] = Frame(
+                base_image,
+                {**(frame.data or {})},
+                format="BGR"
+            )
+
+        # Ensure main topic comes first in the output dictionary
+        if 'main' in output_frames:
+            main_frame = output_frames.pop('main')
+            return {'main': main_frame, **output_frames}
+
+        return output_frames
 
 if __name__ == '__main__':
     FilterLicenseAnnotationDemo.run()
