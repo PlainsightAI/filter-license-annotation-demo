@@ -1,3 +1,17 @@
+# Release Notes
+
+## v0.1.6
+
+### Added
+- Multi-topic processing with `main`-first output ordering
+- `forward_upstream_data` config to pass-through non-image frames
+- End-to-end usage script
+- Tests: `tests/test_integration_config_normalization.py`, `tests/test_smoke_simple.py`
+
+### Improved
+- Config normalization: string-to-type coercion and `FILTER_*` env support
+- Overlay robustness (font scaling guard, bounds checks)
+
 # Changelog
 License Plate Annotation Filter release notes
 

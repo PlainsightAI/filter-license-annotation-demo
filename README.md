@@ -18,6 +18,8 @@ It integrates seamlessly with:
 - 🖍️ Overlays OCR license plate text on the main frame
 - 🖼️ Displays cropped license plate image as a top-left inset
 - 🧠 Filters OCR output using a regex pattern for valid plates (e.g., `ABC1234`)
+- 🔄 Processes all received topics and returns `main` first
+- 🔀 Optional pass-through of upstream non-image frames via `forward_upstream_data`
 - 🧩 Designed to run after detection, cropping, and OCR filters in OpenFilter pipelines
 - ⚙️ Fully configurable via CLI, code, or environment variables
 
@@ -79,6 +81,20 @@ make run
 ```
 
 Then open [http://localhost:8000](http://localhost:8000) to view annotated results.
+
+### Single-process Usage Script
+
+Run the full pipeline in one process (with safe port spacing):
+
+```bash
+WEBVIS_PORT=8002 \
+VIDEO_INPUT=./example_video.mp4 \
+FILTER_CROPPED_TOPIC_SUFFIX=license_plate \
+FILTER_FORWARD_UPSTREAM_DATA=true \
+python scripts/filter_usage.py
+```
+
+Open `http://localhost:8002`.
 
 ---
 
@@ -154,14 +170,24 @@ if __name__ == '__main__':
 
 ## 🔧 Configuration
 
-| Field                  | Type    | Description                           | Example          |
-| ---------------------- | ------- | ------------------------------------- | ---------------- |
-| `cropped_topic_suffix` | `str`   | Topic with cropped plate images       | `"cropped_main"` |
-| `font_scale`           | `float` | Font size multiplier for overlay text | `1.0`            |
-| `font_thickness`       | `int`   | Thickness of text stroke              | `2`              |
-| `inset_size`           | `tuple` | Width and height of the inset image   | `(200, 60)`      |
-| `inset_margin`         | `tuple` | Offset from top-left corner           | `(10, 10)`       |
-| `debug`                | `bool`  | Enable verbose debug logging          | `true`           |
+| Field                  | Type    | Description                                   | Example          |
+| ---------------------- | ------- | --------------------------------------------- | ---------------- |
+| `cropped_topic_suffix` | `str`   | Topic with cropped plate images               | `"license_plate"` |
+| `font_scale`           | `float` | Font size multiplier for overlay text         | `1.0`            |
+| `font_thickness`       | `int`   | Thickness of text stroke                      | `2`              |
+| `inset_size`           | `tuple` | Width and height of the inset image           | `(200, 60)`      |
+| `inset_margin`         | `tuple` | Offset from top-left corner                   | `(10, 10)`       |
+| `debug`                | `bool`  | Enable verbose debug logging                  | `true`           |
+| `forward_upstream_data`| `bool`  | Forward non-image frames from upstream        | `true`           |
+
+Environment variables (examples):
+
+```bash
+export FILTER_CROPPED_TOPIC_SUFFIX=license_plate
+export FILTER_FORWARD_UPSTREAM_DATA=true
+export FILTER_FONT_SCALE=1.2
+export FILTER_INSET_MARGIN=20x10
+```
 
 All fields are also supported as environment variables using the `FILTER_` prefix (e.g., `FILTER_FONT_SCALE=1.2`).
 
