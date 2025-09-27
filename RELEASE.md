@@ -13,9 +13,14 @@
 - Overlay robustness (font scaling guard, bounds checks)
 
 # Changelog
-License Plate Annotation Filter release notes
+Plate ID OCR Filter release notes
 
 ## [Unreleased]
+
+## v0.1.6 - 2025-09-27
+
+# Changed
+- Updated documentation
 
 ## v0.1.5 - 2025-08-07
 

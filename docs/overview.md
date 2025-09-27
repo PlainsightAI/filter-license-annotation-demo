@@ -1,10 +1,10 @@
 ---
-title: License Plate Annotation Demo
+title: Plate ID OCR
 sidebar_label: Overview
 sidebar_position: 1
 ---
 
-The **License Plate Annotation Demo Filter** is a lightweight [OpenFilter](https://github.com/PlainsightAI/openfilter)-based filter that overlays OCR-processed license plate text and cropped plate images onto video frames.  
+The **Plate ID OCR** is a lightweight [OpenFilter](https://github.com/PlainsightAI/openfilter)-based filter that overlays OCR-processed license plate text and cropped plate images onto video frames.  
 It is designed to work **in combination with detection, cropping, and OCR filters**, and provides an intuitive way to visualize the results of a full license plate recognition pipeline.
 
 This document is automatically published to production documentation on every production release.
