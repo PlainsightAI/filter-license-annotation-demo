@@ -51,7 +51,7 @@ Plate ID OCR Filter release notes
 ## v0.1.0 - 2025-05-22
 
 ### Added
-- Initial release of the License Plate Annotation Demo filter for visualizing OCR license plate results on video frames.
+- Initial release of the Plate ID OCR Filter for visualizing OCR license plate results on video frames.
 - Overlays OCR-detected license plate text onto the main frame using:
   - Automatic font scaling to fit within a padded text box.
   - Configurable font scale and thickness.
