@@ -138,3 +138,4 @@ telemetry/
 output/
 _authors.txt
 model.pth
+results/

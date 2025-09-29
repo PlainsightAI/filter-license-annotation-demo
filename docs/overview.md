@@ -18,7 +18,9 @@ This document is automatically published to production documentation on every pr
 - 🧠 Filters OCR output using a regex (e.g., `ABC1234`)
 - 🔁 Maintains the last known valid plate if current OCR fails
 - 🔧 Fully configurable via CLI flags or `FILTER_` environment variables
-- 📦 Compatible with OpenFilter CLI and multi-stage pipelines
+- 🔀 Optional pass-through of upstream non-image frames via `forward_upstream_data`
+- 🔄 Processes all received topics and returns `main` first
+ - 📦 Compatible with OpenFilter CLI and multi-stage pipelines
 
 ---
 
@@ -47,10 +49,14 @@ openfilter run \
   - Webvis
 ````
 
-You can also run the pipeline using:
+You can also run the pipeline using the single-process usage script:
 
 ```bash
-make run
+WEBVIS_PORT=8002 \\
+VIDEO_INPUT=./example_video.mp4 \\
+FILTER_CROPPED_TOPIC_SUFFIX=license_plate \\
+FILTER_FORWARD_UPSTREAM_DATA=true \\
+python scripts/filter_usage.py
 ```
 
 This pipeline:
