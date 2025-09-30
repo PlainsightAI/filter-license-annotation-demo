@@ -17,6 +17,12 @@ Plate ID OCR Filter release notes
 
 ## [Unreleased]
 
+## v0.1.7 - 2025-09-29
+
+# Changed
+- Updated version to v0.1.7
+
+
 ## v0.1.6 - 2025-09-27
 
 # Changed
