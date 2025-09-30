@@ -1,6 +1,6 @@
-# Contributing to the License Plate Annotation Demo Filter
+# Contributing to the Plate ID OCR Filter
 
-Thanks for your interest in improving the **License Plate Annotation Demo Filter**, a lightweight OpenFilter-based utility that overlays OCR results and cropped plate images onto video frames.  
+Thanks for your interest in improving the **Plate ID OCR**, a lightweight OpenFilter-based utility that overlays OCR results and cropped plate images onto video frames.  
 Whether you're enhancing the overlay behavior, fixing a bug, improving debug logging, or polishing the documentation — your contribution is valued.
 
 This guide covers:
@@ -16,7 +16,7 @@ This guide covers:
 
 ## Topics
 
-- [Contributing to the License Plate Annotation Demo Filter](#contributing-to-the-license-plate-annotation-demo-filter)
+- [Contributing to the Plate ID OCR Filter](#contributing-to-the-plate-id-ocr-filter)
   - [Setting up your development environment](#setting-up-your-development-environment)
   - [Running tests](#running-tests)
   - [Using with the OpenFilter CLI](#using-with-the-openfilter-cli)
@@ -33,7 +33,7 @@ This guide covers:
 
 ## Setting up your development environment
 
-The License Plate Annotation Demo Filter is a standalone Python package built with [OpenFilter](https://github.com/PlainsightAI/openfilter).
+The Plate ID OCR is a standalone Python package built with [OpenFilter](https://github.com/PlainsightAI/openfilter).
 
 To set up your environment:
 

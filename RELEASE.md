@@ -13,9 +13,20 @@
 - Overlay robustness (font scaling guard, bounds checks)
 
 # Changelog
-License Plate Annotation Filter release notes
+Plate ID OCR Filter release notes
 
 ## [Unreleased]
+
+## v0.1.7 - 2025-09-29
+
+# Changed
+- Updated version to v0.1.7
+
+
+## v0.1.6 - 2025-09-27
+
+# Changed
+- Updated documentation
 
 ## v0.1.5 - 2025-08-07
 
@@ -46,7 +57,7 @@ License Plate Annotation Filter release notes
 ## v0.1.0 - 2025-05-22
 
 ### Added
-- Initial release of the License Plate Annotation Demo filter for visualizing OCR license plate results on video frames.
+- Initial release of the Plate ID OCR Filter for visualizing OCR license plate results on video frames.
 - Overlays OCR-detected license plate text onto the main frame using:
   - Automatic font scaling to fit within a padded text box.
   - Configurable font scale and thickness.

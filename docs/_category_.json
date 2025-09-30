@@ -1,9 +1,9 @@
 {
-  "label": "License Annotation Demo",
+  "label": "Plate ID OCR",
   "link": {
     "type": "generated-index",
-    "title": "License Annotation Demo",
-    "description": "License Annotation Demo description",
+    "title": "Plate ID OCR",
+    "description": "Plate ID OCR description",
     "slug": "/filter-license-annotation-demo"
   }
 }
