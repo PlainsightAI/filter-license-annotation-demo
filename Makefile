@@ -2,7 +2,7 @@
 # Repo-specific variables
 # ---------------------------------
 
-IMAGE ?= us-west1-docker.pkg.dev/plainsightai-prod/oci/filter-license-annotation-demo
+IMAGE ?= plainsightai/openfilter-license-annotation-demo
 
 # Define these variables for consistency in the repo
 REPO_NAME ?= filter-license-annotation-demo
