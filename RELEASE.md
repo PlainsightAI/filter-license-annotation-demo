@@ -17,6 +17,14 @@ Plate ID OCR Filter release notes
 
 ## [Unreleased]
 
+## v0.1.8 - 2026-04-17
+
+### Changed
+- Add CI/CD workflows: create-release.yaml, ci.yaml, security-scan.yaml
+- Bump openfilter to >=0.1.27
+- Add Makefile IMAGE for Docker Hub
+
+
 ## v0.1.7 - 2025-09-29
 
 # Changed
