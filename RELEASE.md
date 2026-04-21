@@ -1,6 +1,5 @@
 # Release Notes
 
-## v0.1.6
 
 ### Added
 - Multi-topic processing with `main`-first output ordering
