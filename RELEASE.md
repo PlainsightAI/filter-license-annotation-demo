@@ -3,13 +3,16 @@ License Annotation Demo filter release notes
 
 ## [Unreleased]
 
-## v0.1.10 - 2026-04-23
+## v0.1.10 - 2026-04-24
 
 ### Changed
 - Fix release workflow secret names: `PYPI_API_TOKEN` → `PLAINSIGHT_PYPI_TOKEN`, `DOCKERHUB_TOKEN` → `DOCKERHUB_ACCESS_TOKEN` (org-level secret names). Without this the PyPI / Docker Hub tokens resolved to empty and no package has been published since the migration.
 - Bump openfilter dependency to `>=0.1.30`.
-- Remove redundant ci.yaml (shared workflow handles PR testing)
-- Add push + pull_request triggers to create-release.yaml
+- Remove redundant ci.yaml (shared workflow handles PR testing).
+- Add push + pull_request triggers to create-release.yaml.
+
+### Notes
+- `v0.1.8` and `v0.1.9` were tagged but never published due to the secret mapping issue fixed here; `v0.1.10` is the first successful publish since the org secret migration.
 
 
 ## v0.1.7 - 2025-09-29
