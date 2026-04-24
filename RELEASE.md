@@ -1,80 +1,52 @@
-# Release Notes
+# Changelog
+License Annotation Demo filter release notes
 
-
+## [Unreleased]
 
 ## v0.1.10 - 2026-04-23
 
 ### Changed
-- Bump openfilter SDK, align CI workflow with shared release gate (source-paths)
-
 - Fix release workflow secret names: `PYPI_API_TOKEN` → `PLAINSIGHT_PYPI_TOKEN`, `DOCKERHUB_TOKEN` → `DOCKERHUB_ACCESS_TOKEN` (org-level secret names). Without this the PyPI / Docker Hub tokens resolved to empty and no package has been published since the migration.
 - Bump openfilter dependency to `>=0.1.30`.
-
-### Added
-- Multi-topic processing with `main`-first output ordering
-- `forward_upstream_data` config to pass-through non-image frames
-- End-to-end usage script
-- Tests: `tests/test_integration_config_normalization.py`, `tests/test_smoke_simple.py`
-
-### Improved
-- Config normalization: string-to-type coercion and `FILTER_*` env support
-- Overlay robustness (font scaling guard, bounds checks)
-
-# Changelog
-Plate ID OCR Filter release notes
-
-## [Unreleased]
-
-## v0.1.9 - 2026-04-20
-
-### Changed
 - Remove redundant ci.yaml (shared workflow handles PR testing)
 - Add push + pull_request triggers to create-release.yaml
 
 
-## v0.1.8 - 2026-04-17
-
-### Changed
-- Add CI/CD workflows: create-release.yaml, ci.yaml, security-scan.yaml
-- Bump openfilter to >=0.1.27
-- Add Makefile IMAGE for Docker Hub
-
-
 ## v0.1.7 - 2025-09-29
 
-# Changed
+### Changed
 - Updated version to v0.1.7
 
 
 ## v0.1.6 - 2025-09-27
 
-# Changed
+### Changed
 - Updated documentation
 
 ## v0.1.5 - 2025-08-07
 
-# Changed
+### Changed
 - Updated dependencies
 - Added Python 3.13 support
 
 ## v0.1.4 - 2025-08-07
 
-# Changed
+### Changed
 - Updated dependencies
 
 ## v0.1.3 - 2025-08-01
 
-# Changed
+### Changed
 - Updated dependencies
 
 ## v0.1.2 - 2025-07-16
 
-# Changed
+### Changed
 - Updated dependencies
 
 ## v0.1.1 - 2025-05-22
 
-# Changed
+### Changed
 - Updated dependencies
 
 ## v0.1.0 - 2025-05-22
