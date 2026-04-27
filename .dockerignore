@@ -7,6 +7,9 @@ scripts
 !README.md
 *.mp4
 data/
+venv/
+.env
+*.env
 __pycache__
 *.pyc
 *.egg-info
