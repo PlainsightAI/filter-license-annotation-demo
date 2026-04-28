@@ -7,11 +7,11 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN useradd -ms /bin/bash appuser
 WORKDIR /app
 
-COPY . .
+COPY --chown=appuser:appuser . .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir .
 
-RUN mkdir -p /app/logs && chown -R appuser:appuser /app
+RUN mkdir -p /app/logs && chown -R appuser:appuser /app/logs
 
 USER appuser
 CMD ["python", "-m", "filter_license_annotation_demo.filter"]
