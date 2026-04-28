@@ -7,11 +7,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 RUN useradd -ms /bin/bash appuser
 WORKDIR /app
 
-COPY pyproject.toml README.md VERSION ./
+COPY . .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir .
-
-COPY . .
 
 RUN mkdir -p /app/logs && chown -R appuser:appuser /app
 
