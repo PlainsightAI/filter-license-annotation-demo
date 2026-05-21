@@ -3,6 +3,10 @@ License Annotation Demo filter release notes
 
 ## [Unreleased]
 
+### Changed
+
+- Bump openfilter to 1.1.0
+
 ## v0.1.11 - 2026-04-27
 
 ### Added
