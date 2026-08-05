@@ -3,10 +3,13 @@ License Annotation Demo filter release notes
 
 ## [Unreleased]
 
-### Changed
+## v0.1.12 - 2026-08-04
 
-- Bump the openfilter dependency to 1.2.0
-- Bump the openfilter dependency to 1.2.1
+### Changed
+- Update `openfilter[all]` to `>=1.2.1`.
+- Grant `id-token: write` in the release workflow for keyless (cosign) SBOM attestation.
+- Restore the build-commit facet: rename `GITHUB_SHA` → `VERSION_SHA` after the source `COPY` so openfilter reports `version_sha` in lineage.
+- Update dev-tooling floors and switch dev pins to ranges.
 
 ## v0.1.11 - 2026-04-27
 
@@ -17,7 +20,7 @@ License Annotation Demo filter release notes
 
 ### Changed
 - Fix release workflow secret names: `PYPI_API_TOKEN` → `PLAINSIGHT_PYPI_TOKEN`, `DOCKERHUB_TOKEN` → `DOCKERHUB_ACCESS_TOKEN` (org-level secret names). Without this the PyPI / Docker Hub tokens resolved to empty and no package has been published since the migration.
-- Bump openfilter dependency to `>=0.1.30`.
+- Update openfilter dependency to `>=0.1.30`.
 - Remove redundant ci.yaml (shared workflow handles PR testing).
 - Add push + pull_request triggers to create-release.yaml.
 

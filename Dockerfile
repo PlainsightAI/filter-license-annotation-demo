@@ -8,6 +8,8 @@ RUN useradd -ms /bin/bash appuser
 WORKDIR /app
 
 COPY --chown=appuser:appuser . .
+# The release workflow writes ./GITHUB_SHA before build; openfilter reads VERSION_SHA to report version_sha.
+RUN if [ -f GITHUB_SHA ]; then mv GITHUB_SHA VERSION_SHA; fi
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir .
 
