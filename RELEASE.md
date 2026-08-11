@@ -3,9 +3,12 @@ License Annotation Demo filter release notes
 
 ## [Unreleased]
 
+## v0.1.13 - 2026-08-10
+
 ### Changed
 
-- Bump the openfilter dependency to 1.2.2
+- Build the image on `openfilter-base` (weekly apt-upgraded python-slim) instead of a stale `python:X.Y.Z-slim` pin, clearing the OS-package CVEs the pin carried.
+- Update the openfilter dependency to 1.2.2
 
 ## v0.1.12 - 2026-08-04
 
@@ -31,12 +34,10 @@ License Annotation Demo filter release notes
 ### Notes
 - `v0.1.8` and `v0.1.9` were tagged but never published due to the secret mapping issue fixed here; `v0.1.10` is the first successful publish since the org secret migration.
 
-
 ## v0.1.7 - 2025-09-29
 
 ### Changed
 - Updated version to v0.1.7
-
 
 ## v0.1.6 - 2025-09-27
 
